@@ -31,10 +31,38 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  Tag.create({
+    tag_name: req.body.tag_name
+  })
+  .then((newTag) => {
+    // Send the newly created row as a JSON object
+    res.json(newTag);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  });
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(
+    {
+      // All the fields you can update and the data attached to the request body.
+      tag_name: req.body.tag_name,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+  .then((updatedTag) => {
+    // Sends the updated book as a json response
+    res.json(updatedTag);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {
